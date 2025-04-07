@@ -133,4 +133,43 @@ a:hover {
     background-color: #B2B6E6;
     color: #37254E;
     padding: 4px; /* looked this up bc that background was bothering me */
+    position: sticky;
+    top: 4px;
+}
+
+@media screen and not (max-width: 600px) {
+    .mobile-disclaimer {
+        display: none;
+    }
+}
+@media screen and (max-width: 600px) {
+    .mobile-disclaimer {
+        /* The colors are special, and the rest is ripped from body */
+        background-color: #37254E;
+        color: #F4EDF6;
+        font-family: 'Istok Web', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+/************** BODY ******************/
+
+.boxContainer {
+    display: flex;
+}
+
+.threebox {
+    width: 32%;
+    padding: 8px;
+    border-color: #78668D;
+    border-style: inset; /* Intellisense (my savior) gave me this option and I was curious */
+    background-color: #B2B6E6;
+}
+
+#week3center {
+    margin-left: 4px;
+    margin-right: 4px;
 }
