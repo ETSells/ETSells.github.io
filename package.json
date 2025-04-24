@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "parcel index.html",
         "build": "parcel build index.html",
-        "deploy": "gh-pages -d dist"
+        "deploy": "npx gh-pages -d dist"
     },
     "devDependencies": {
         "gh-pages": "^6.3.0",
