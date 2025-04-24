@@ -1,0 +1,78 @@
+body {
+  background-color: #0d1f22;
+  margin: 0;
+  padding: 0;
+}
+
+.titleBar {
+  background-color: #0d1f22;
+  align-items: center;
+  gap: .75rem;
+  height: 50px;
+  margin: 0;
+  padding: 0 1rem;
+  display: flex;
+  box-shadow: 0 10px 10px #000;
+}
+
+.titleBar h2 {
+  color: #edecdc;
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  font-family: Azeret Mono, monospace;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23px;
+  display: inline-block;
+}
+
+.titleBar img {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  display: inline-block;
+}
+
+.pageTitle {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  display: flex;
+}
+
+.pageTitle h1 {
+  text-align: center;
+  color: #edecdc;
+  align-items: center;
+  font-family: Inter, sans-serif;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 36px;
+  display: flex;
+}
+
+.boxContainer {
+  width: 100%;
+  display: flex;
+}
+
+.sideDiv {
+  background-color: #264027;
+  border-radius: 5px;
+  width: 45%;
+  padding: 8px;
+  display: inline-block;
+}
+
+#right {
+  width: 800px;
+}
+
+#left {
+  width: auto;
+}
+/*# sourceMappingURL=AME220.4d663569.css.map */
