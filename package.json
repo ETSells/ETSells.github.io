@@ -4,7 +4,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "parcel index.html",
-        "build": "parcel build index.html"
+        "build": "parcel build index.html",
+        "deploy": "npm run dev"
     },
     "devDependencies": {
         "gh-pages": "^6.3.0",
