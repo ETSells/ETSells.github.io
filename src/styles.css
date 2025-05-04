@@ -1,7 +1,22 @@
 body {
+    overflow: auto;
     background-color: #0D1F22;
-    margin: 0;
-    padding: 0;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+
+    color: #EDECDC;
+}
+
+a:link {
+    font-family: 'Inter', sans-serif;
+    color:#B38A58
+}
+
+a:visited {
+    font-family: 'Inter', sans-serif;
+    color:#EDECDC
 }
 
 /* * * * * * * titleBar * * * * * * * */
@@ -10,12 +25,11 @@ body {
     background-color: #0D1F22;
     box-shadow: 0 10px 10px black;
     height: 50px;
-    /* width: 100%; */
+    width: 100%;
     margin: 0;
     display: flex;
     align-items: center;
-    padding: 0 1rem;
-    gap: 0.75rem;
+    padding: 0;
 }
 
 .titleBar h2 {
@@ -72,23 +86,116 @@ body {
 
 /* * * * * * * bodyContainer * * * * * * * */
 
+
 .boxContainer {
     display: flex;
-    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
 }
 
 .sideDiv {
-    width: 45%;
-    padding: 8px;
+    padding: 20px;
+    margin: 20px;
     background-color: #264027;
+    color: #EDECDC;
     border-radius: 5px;
-    display: inline-block;
-}
-
-#right {
-    width: 800px;
+    box-shadow: 0 4px 4px black;
 }
 
 #left {
-    width: auto;
+    text-align: center;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+#right {
+    text-align: center;
+    flex: 1;
+}
+
+.rollButton {
+    background-color: #B38A58;
+
+    /* Copied from Figma */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #0D1F22;
+    /* End Figma */
+
+    border-width: 0;
+    box-shadow: 0 4px 4px black;
+    border-radius: 3px;
+    margin: 10px;
+}
+
+.rollType {
+    /* Copied from Figma */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+
+    color: #EDECDC;
+    /* End Figma */
+
+    background-color: #B38A58;
+    max-width: 100px;
+
+    border-width: 0px;
+    border-radius: 3px;
+
+
+}
+
+/* Responsiveness */
+
+/* If the window is less than 850px wide, 
+   show both of the "side" divs on top of 
+   each other and center them. */
+@media (max-width: 850px) {
+    .boxContainer {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #left {
+        width: 90%;
+    }
+
+    #right {
+        width: 90%;
+    }
+}
+
+/* Animate the "roll" button */
+/* Guide 1: https://www.w3schools.com/css/css3_animations.asp */
+/* Guide 2: https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes */
+/* Guide 3: https://www.w3schools.com/css/css3_buttons.asp */
+@keyframes roll {
+    0% {
+        font-size: 20px;
+        background-color: #B38A58;
+    }
+
+    50% {
+        font-size: 24px;
+        background-color: #6F732F;
+    }
+
+    100% {
+        font-size: 20px;
+        background-color: #B38A58;
+    }
+}
+
+/* Get rid of the shadow and run the animation */
+.rollButton:active {
+    box-shadow: 0 0 0 black;
+    animation-name: roll;
+    animation-duration: 0.25s;
 }

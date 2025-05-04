@@ -674,11 +674,76 @@ var _probabilityJs = require("./probability.js");
 var _utilJs = require("./util.js");
 /*
 * This was built using the example in "example.js" as a guide.
-*/ (async function() {
-    let outputs = _probabilityJs.parseAndProcessInput("10d8");
-    if (outputs == null) return;
-    const data = _utilJs.distArrToGraphableArr(outputs);
-    let chart = new (0, _autoDefault.default)(document.getElementById('distribution'), {
+* There's a lot that transfers from JavaFX here, but the dynamic
+* typing makes some things weird.
+*/ let graph = [
+    0,
+    1 / 6,
+    1 / 6,
+    1 / 6,
+    1 / 6,
+    1 / 6,
+    1 / 6
+];
+let chart;
+/* Triggers and HTML interaction */ let button = document.getElementById("roll");
+let dialog = document.getElementById("dialog");
+let dialogButton = document.getElementById("dialogButton");
+/* Event listener that triggers the generation of a new chart */ button.addEventListener('click', function(event) {
+    let raw = document.getElementById("entry");
+    /* Perform operation and process */ let processedInput = _probabilityJs.parseAndProcessInput(raw.value);
+    if (processedInput == null || processedInput == NaN) {
+        /* Guide used: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog */ console.log("ERROR: Invalid Input.");
+        dialog.showModal();
+        return; /* Break and do not process further */ 
+    } else {
+        graph = processedInput;
+        const data = _utilJs.distArrToGraphableArr(graph);
+        console.log(data);
+        chart.destroy();
+        chart = new (0, _autoDefault.default)(document.getElementById('distribution'), {
+            type: 'bar',
+            data: {
+                labels: data.map((row)=>row.Result),
+                datasets: [
+                    {
+                        label: 'Probability of Occurrence',
+                        data: data.map((row)=>row.Probability),
+                        backgroundColor: '#6F732F',
+                        borderColor: '#B38A58'
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#EDECDC' // <- if you want to style label text color
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#EDECDC'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#EDECDC'
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+/* Event listener for error dialog. */ dialogButton.addEventListener("click", ()=>{
+    dialog.close();
+});
+/* Generates the initial chart */ (async function() {
+    const data = _utilJs.distArrToGraphableArr(graph);
+    chart = new (0, _autoDefault.default)(document.getElementById('distribution'), {
         type: 'bar',
         data: {
             labels: data.map((row)=>row.Result),
@@ -14242,27 +14307,33 @@ function parseAndProcessInput(input) {
     let diceSizeBuf = "";
     let secondHalf = false;
     let i = 0;
-    /* String processing */ while(secondHalf == false){
-        if (input.at(i) == "d") secondHalf = true;
-        else if (!(parseInt(input.at(i)) == NaN)) numDiceBuf += input.at(i);
-        else return null;
-        i++;
+    /* This occasionally threw a "range error" for some chars.
+       The try/catch block is here to handle that case. Guide: 
+       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch */ try {
+        /* String processing */ while(secondHalf == false){
+            if (input.at(i) == "d") secondHalf = true;
+            else if (!isNaN(parseInt(input.at(i)))) numDiceBuf += input.at(i);
+            else return null;
+            i++;
+        }
+        while(secondHalf === true){
+            if (i >= input.length) secondHalf = false;
+            else if (!isNaN(parseInt(input.at(i)))) diceSizeBuf += input.at(i);
+            else return null;
+            i++;
+        }
+        /* Cast Buffers */ let numDice = parseInt(numDiceBuf);
+        let diceSize = parseInt(diceSizeBuf);
+        if (numDice == NaN && diceSize == NaN) return null;
+        else if (numDice == NaN) numDice = 1;
+        /* Generate and return the distribution array */ return generateDistribution(numDice, diceSize);
+    } catch (error) {
+        console.log("Exception caught while processing input. Stack trace: ");
+        console.log(error);
+        return null;
     }
-    while(secondHalf === true){
-        if (i >= input.length) secondHalf = false;
-        else if (!(parseInt(input.at(i)) == NaN)) diceSizeBuf += input.at(i);
-        else return null;
-        i++;
-    }
-    /* Cast Buffers */ let numDice = parseInt(numDiceBuf);
-    let diceSize = parseInt(diceSizeBuf);
-    if (numDice == NaN && diceSize == NaN) return null;
-    else if (numDice == NaN) numDice = 1;
-    /* Generate and return the distribution array */ return generateDistribution(numDice, diceSize);
 }
 /* PRIVATE */ /* Using a dynamic programming approach, generate an array with */ /* the discrete probability distribution of rolling XXdYY.      */ function generateDistribution(numDice, diceSize) {
-    console.log(numDice);
-    console.log(diceSize);
     /* Base Case (numDice = 1) */ let distr = new Array(diceSize + 1);
     /* position 0 is empty for convenience */ distr.fill(0); /* Undefined behavior if not initialized to a number */ 
     for(let i = 1; i <= diceSize; i++)distr[i] = 1;

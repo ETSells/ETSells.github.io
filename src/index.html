@@ -16,7 +16,7 @@
 <!--TITLE BAR BEGIN-->
 <div class="titleBar">
     <img src="../resources/github_pfp.png" alt="Profile Picture">
-    <h2>&lt;etsells.dev&gt;</h2>
+    <h2>&nbsp;&lt;etsells.dev&gt;</h2>
 </div>
 <!--TITLE BAR END-->
 
@@ -32,26 +32,48 @@
 </div>
 <!--PAGE TITLE END-->
 
-<div class="bodyContainer">
+<div class="boxContainer">
 
     <!--Left Div (inputs) BEGIN-->
     <div class="sideDiv" id="left">
         <h2>Dice:</h2>
-        <h3>&#40;e.g. d20, 2d8, etc. &#41;</h3>
+        <input class="rollType" id="entry" placeholder="e.g. 2d10"></input>
+
+        <!-- https://stackoverflow.com/questions/71593550/how-to-insert-unicode-u2665-in-a-h2-html -->
+        <button class="rollButton" id="roll">
+            Roll &#x1F3B2;
+        </button>
+
+        <p>
+            About: This tool generates the 
+            <a href="https://www.geeksforgeeks.org/probability-mass-function/" target="_blank">probability mass function (PMF)</a>
+            for a given dice roll or set of rolls. This tells you the discrete probability of any occurrence (total result of the roll),
+            and visualizes the approximate distribution.
+        </p>
+        <p>
+            By default, the result of "1d6" is shown. Try it for yourself!
+        </p>
     </div>
     <!--Left Div (inputs) END-->
 
     <!--Right Div (outputs) BEGIN-->
     <div class="sideDiv" id="right">
-        <!-- <div style="width: 500px;"><canvas id="dimensions"></canvas></div><br/> -->
-        <div style="width: 800px;"><canvas id="distribution"></canvas></div>
-
-        <!-- <script type="module" src="dimensions.js"></script> -->
+        <canvas id="distribution"></canvas>
         <script type="module" src="./distributionGrapher.js"></script>
     </div>
     <!--Right Div (outputs) END-->
 
 </div>
+
+<!--Additional Elements BEGIN-->
+<!--Credit: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog-->
+<dialog id="dialog">
+    <p>Please ensure your input has the proper format.</p>
+    <form method="dialog">
+      <button autofocus id="dialogButton">Okay</button>
+    </form>
+</dialog>
+<!--Additional Elements END-->
 
 </body>
 </html>

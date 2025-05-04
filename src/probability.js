@@ -15,52 +15,59 @@ export function parseAndProcessInput(input) {
     let secondHalf = false;
     let i = 0;
 
-    /* String processing */
-    while (secondHalf == false) {
-        if (input.at(i) == "d") {
-            secondHalf = true;
+    /* This occasionally threw a "range error" for some chars.
+       The try/catch block is here to handle that case. Guide: 
+       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch */
+    try {
+        /* String processing */
+        while (secondHalf == false) {
+            if (input.at(i) == "d") {
+                secondHalf = true;
+            }
+            else if (!isNaN((parseInt(input.at(i)))))   {      
+                numDiceBuf += input.at(i);
+            }
+            else {
+                return null;
+            }
+            i++;
         }
-        else if (!(parseInt(input.at(i)) == NaN))   {
-            numDiceBuf += input.at(i);
+        while (secondHalf === true) {
+            if (i >= input.length) {
+                secondHalf = false;
+            }
+            else if (!isNaN((parseInt(input.at(i)))))   {
+                diceSizeBuf += input.at(i);
+            }
+            else {
+                return null;
+            }
+            i++;
         }
-        else {
-            return null;
-        }
-        i++;
-    }
-    while (secondHalf === true) {
-        if (i >= input.length) {
-            secondHalf = false;
-        }
-        else if (!(parseInt(input.at(i)) == NaN))   {
-            diceSizeBuf += input.at(i);
-        }
-        else {
-            return null;
-        }
-        i++;
-    }
 
-    /* Cast Buffers */
-    let numDice = parseInt(numDiceBuf)
-    let diceSize = parseInt(diceSizeBuf)
-    if (numDice == NaN && diceSize == NaN) {
+        /* Cast Buffers */
+        let numDice = parseInt(numDiceBuf)
+        let diceSize = parseInt(diceSizeBuf)
+        if (numDice == NaN && diceSize == NaN) {
+            return null;
+        }
+        else if (numDice == NaN) {
+            numDice = 1
+        }
+
+        /* Generate and return the distribution array */
+        return generateDistribution(numDice, diceSize);
+    } catch (error) {
+        console.log("Exception caught while processing input. Stack trace: ");
+        console.log(error);
         return null;
     }
-    else if (numDice == NaN) {
-        numDice = 1
-    }
-
-    /* Generate and return the distribution array */
-    return generateDistribution(numDice, diceSize);
 }
 
 /* PRIVATE */
 /* Using a dynamic programming approach, generate an array with */
 /* the discrete probability distribution of rolling XXdYY.      */
 function generateDistribution(numDice, diceSize) {
-    console.log(numDice);
-    console.log(diceSize);
 
     /* Base Case (numDice = 1) */
     let distr = new Array(diceSize + 1) /* position 0 is empty for convenience */
